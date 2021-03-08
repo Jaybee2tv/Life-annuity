@@ -16,12 +16,12 @@ function confidence_inter(dates,cohorte) %years of interest[2000 2019], cohorte 
   var_death_rates = (death_rate_xt.^2)./death;
   ic_up = death_rate_xt + sqrt(var_death_rates).*z_alpha;
   ic_down = death_rate_xt - sqrt(var_death_rates).*z_alpha;
-  
-  plot(dates(1):dates(2), death_rate_xt,'DisplayName', 'rate')
+  figure('name', 'Intervale de confiance')
+  plot(dates(1):dates(2), death_rate_xt,'-o','DisplayName', 'rate')
   hold on
-  plot(dates(1):dates(2), ic_up,'DisplayName', 'High')
+  plot(dates(1):dates(2), ic_up,'-o','DisplayName', 'High')
   hold on 
-  plot(dates(1):dates(2), ic_down,'DisplayName', 'down')
+  plot(dates(1):dates(2), ic_down,'-o','DisplayName', 'down')
   
    
   

@@ -3,8 +3,8 @@ function [alp,kap,bet] = leeCar_NR(dates, ages,max_iter, tol)
   alp = zeros(1,length(ages(1):ages(2)));
   kap = zeros(1,length(dates(1):dates(2)));
   bet = ones(1,length(ages(1):ages(2)));
-  list_age = [ages(1):ages(2)];
-  list_period = [dates(1):dates(2)];
+  list_age = ages(1):ages(2);
+  list_period = dates(1):dates(2);
   
   %---------------for f_beta and f_alpha. Just to get the indexes
   dates_indexes_data = zeros(1,length(dates(1):dates(2))); %indexes in Data table. Index of people thath have 0 year in year x
