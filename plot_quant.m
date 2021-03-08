@@ -3,7 +3,7 @@ function plot_quant()
   
   date = [2000:2019];
   dates_presente = 20;
-  start_date_ind = [zeros(0,dates_presente)];
+  start_date_ind = zeros(0,dates_presente);
   a = 1;
   for i = date
       start_date_ind(a) =  find(Data.Year == i,1);

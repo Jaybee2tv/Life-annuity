@@ -13,7 +13,7 @@ function plot_tau(dates,ages) %date = [date1 date2 date3 ...], function will plo
   for i= 1:length(dates)
       deb = start_date_ind(i)+ages(1);
       fin = start_date_ind(i)+ages(2);
-      plot(Data.Age(deb:fin),log(Data.mx(deb:fin)),'-o','DisplayName', string(dates(i)))
+      plot(Data.Age(deb:fin),log(Data.mx(deb:fin)),'DisplayName', string(dates(i)))
       hold on
   end
   xlabel('Age'); ylabel('log(\mu_{x})'); legend
