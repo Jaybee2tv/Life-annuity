@@ -1,7 +1,7 @@
 function plot_rectan(date)
   global Data
   dates_presente = 20;
-  start_date_ind = [zeros(1,dates_presente)]; %max 11 dates, populate to reduce computation cos 
+  start_date_ind = zeros(1,dates_presente); %max 11 dates, populate to reduce computation cos 
   a = 1;
   for i = date
       start_date_ind(a) =  find(Data.Year == i,1);

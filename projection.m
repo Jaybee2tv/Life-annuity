@@ -1,7 +1,12 @@
-function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap)% project in n year, m=number of simulation
+function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap,cohor)% project in n year, m=number of simulation
+%Note: bet,kap must come from LeeCar estimatimation not from bootstrap
+%kap_p (kappa projected) must come from LeeCar
 % Give t1, i.e year in wich kappa show linear trend
-  global Data z_alpha
-  age_LOL = 100; % age at which we plot mortality
+%This will project kappa, death rate
+%Evaluate confidence interval on kappa death rate
+%Will also plot CI based on bootstrap
+  global Data 
+  z_alpha = 1.96;
   list_ages = ages(1):ages(2);
   list_dates = dates(1):dates(2);
   k_t = zeros(1,n);% simulations in row for year n 
@@ -17,9 +22,9 @@ function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap)% project in n year,
   %-----Project kappat and build Confinden Inter-------
   k_tup= zeros(1,n);k_tdown = k_tup;
   for year = 1:n
-    k_t(year) = ktn + year*d;
-    k_tup(year) = k_t(year) + sqrt(year*sig_sq).*z_alpha;
-    k_tdown(year) = k_t(year) - sqrt(year*sig_sq).*z_alpha;
+    k_t(year) = ktn + year*d; 
+    k_tup(year) = ktn + year*d + sqrt(year*sig_sq).*z_alpha;
+    k_tdown(year) = ktn + year*d - sqrt(year*sig_sq).*z_alpha;
   end
   
    %------Projecting death------
@@ -42,27 +47,31 @@ function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap)% project in n year,
   x = dates(2)+1:dates(2)+n;
   plot(x,k_t, 'DisplayName','\kappa mean')
   hold on
-  plot(list_dates, kap,'DisplayName','kappa')
+  plot(list_dates(cohor+1:end), kap(cohor+1:end),'DisplayName','kappa')
   hold on
   plot(x,k_tup,'DisplayName','k_tup')
   hold on
   plot(x,k_tdown,'DisplayName', 'k_tdown')
-  xlabel('Periodes'); ylabel('\kappa_{t}'); legend;
+  xlabel('Année'); ylabel('\kappa_{t}'); legend;
   %ylim([0 10])
   %-----------Plotting mortality rates-----------
-  list_mx = zeros(1,length(list_dates));
-  for date = list_dates
-      list_mx(date-dates(1)+1) = Data.mx(find(Data.Year == date,1)+age_LOL);
+  list_d = (dates(1)+cohor):dates(2);
+  list_mx = zeros(1,length(list_d));
+  i = 0;
+  for date = list_d
+      i = i+1;
+      list_mx(i) = Data.mx(find(Data.Year == date,1)+cohor+i-1);
   end
-  
+  a = cohor+length(list_d);
   figure('name', 'Mortality projected')
-  plot(list_dates, list_mx,'DisplayName', '\mu_{x}')
+  plot(list_d, log(list_mx),'DisplayName', '\mu_{x}')
   hold on
-  plot(x, m_pro(age_LOL+1,:),'DisplayName', 'mean \mu_x ')
+  plot(x, log(diag(m_pro,-(a))),'DisplayName', 'mean \mu_x ')
   hold on
-  plot(x, m_pro_up(age_LOL+1,:),'DisplayName', '\mu_{x}up ')
+  plot(x, log(diag(m_pro_up,-(a))),'r','DisplayName', '\mu_{x}up ')
   hold on
-  plot(x, m_pro_down(age_LOL+1,:),'DisplayName', '\mu_{x}down ')
+  plot(x, log(diag(m_pro_down,-(a))),'r','DisplayName', '\mu_{x}down ')
   xlabel('Periodes'); ylabel('\mu_{x}'); legend;
+  xlim([dates(1)+cohor 2050])
   %ylim([0 10])
 end

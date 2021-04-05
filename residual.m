@@ -34,8 +34,8 @@ function [resi, eps_squar] = residual(dates, ages, alp, bet, kap)
   end
   
   figure('name','RESIDU');
-  surf(resi)
-  %imagesc(dates,ages,resi);
+  %surf(resi)
+  imagesc(dates,ages,resi);
   set(gca,'YDir','normal')
   colorbar;
   

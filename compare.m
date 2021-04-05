@@ -14,7 +14,7 @@ function compare(dates,cohorte, alp,bet,kap) %This function compare LeeCAR Death
   for t = 1: length(alp)
     log_mxt(t) = alp(t) +bet(t)*kap(t); %LEECAR FORMULAE
   end
-  %----retrive mx-----
+  %----retrive mx from data-----
   death_rate_xt = zeros(1,length(dates(1):dates(2)));
   for i = dates(1):dates(2)
     index_year = find(Data.Year==i,i-dates(1)+1);% retrieve index of year. 
@@ -26,7 +26,8 @@ function compare(dates,cohorte, alp,bet,kap) %This function compare LeeCAR Death
   plot(dates(1):dates(2),log(death_rate_xt),'DisplayName', 'Crude')
   hold on
   plot(dates(1):dates(2), log_mxt, 'DisplayName', 'LeeCar');
-  text(2002,-4.5,'mean diff = ' +string(differ))
-  xlabel('Age'); ylabel('log(\mu_{x})'); legend
+  %text(2002,-4.5,'mean diff = ' +string(differ))
+  xlabel('Age'); ylabel('log(\mu_{x})'); 
+  %compare 
     
 end

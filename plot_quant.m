@@ -1,7 +1,7 @@
 function plot_quant()
   global Data
   
-  date = [2000:2019];
+  date = 2000:2019;
   dates_presente = 20;
   start_date_ind = zeros(0,dates_presente);
   a = 1;

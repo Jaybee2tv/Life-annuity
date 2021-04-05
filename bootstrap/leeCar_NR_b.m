@@ -1,4 +1,4 @@
-function [alp,kap,bet] = leeCar_NR(dates, ages,max_iter, tol)
+function [alp,kap,bet] = leeCar_NR_b(dates, ages,max_iter, tol, dxt)%leecarter for bootstrap
   global Data
   alp = zeros(1,length(ages(1):ages(2)));
   kap = zeros(1,length(dates(1):dates(2)));
@@ -26,16 +26,16 @@ function [alp,kap,bet] = leeCar_NR(dates, ages,max_iter, tol)
       bet_p = bet;
       kap_p = kap;
       for age = 1:length(list_age)
-        [f_a,fp_a] = f_alpha(alp(age),kap,bet(age),dates_indexes_data,dates_indexes_expo,list_age(age));
+        [f_a,fp_a] = f_alpha_b(alp(age),kap,bet(age),dates_indexes_data,dates_indexes_expo,list_age(age),dxt(age,:));
         alp(age) = alp(age) + f_a/fp_a;
         alp = alp + bet*mean(kap);
       end
       for period = 1:length(list_period)
-        [f_k,fp_k] = f_kappa(alp,kap(period),bet,list_age,list_period(period));
+        [f_k,fp_k] = f_kappa_b(alp,kap(period),bet,list_age,list_period(period),dxt(:,period));
         kap(period) = kap(period) + f_k/fp_k;
       end
       for age = 1:length(list_age)
-        [f_b,fp_b] = f_beta(alp(age),kap,bet(age),dates_indexes_data,dates_indexes_data,list_age(age));
+        [f_b,fp_b] = f_beta_b(alp(age),kap,bet(age),dates_indexes_data,dates_indexes_data,list_age(age),dxt(age,:));
         bet(age) = bet(age) + f_b/fp_b;
       end
       bet_dot = sum(bet);
@@ -49,19 +49,4 @@ function [alp,kap,bet] = leeCar_NR(dates, ages,max_iter, tol)
     end
   end
   
-    figure('name','ALPHA')
-    plot(list_age,alp)
-    ylabel('\alpha_{x}')
-    xlabel('ages')
-  
-    figure('name','BETTTA')
-    plot(list_age,bet)
-    ylabel('\beta_{x}')
-    xlabel('ages')
-  
-    figure('name','KAPPA')
-    plot(list_period,kap)
-    ylabel('\kappa_{x}')
-    xlabel('periodes')
-    
 end
