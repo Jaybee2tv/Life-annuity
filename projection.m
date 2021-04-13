@@ -4,12 +4,11 @@ function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap,cohor)% project in n
 % Give t1, i.e year in wich kappa show linear trend
 %This will project kappa, death rate
 %Evaluate confidence interval on kappa death rate
-%Will also plot CI based on bootstrap
   global Data 
   z_alpha = 1.96;
   list_ages = ages(1):ages(2);
   list_dates = dates(1):dates(2);
-  k_t = zeros(1,n);% simulations in row for year n 
+  k_t = zeros(n,1);% simulations in row for year n 
   ktn = kap(length(kap)); %the last kappa
   t_line = (t1-dates(1));
   d = (kap(length(kap))- kap(t1-dates(1)))/(length(kap)-t_line);
