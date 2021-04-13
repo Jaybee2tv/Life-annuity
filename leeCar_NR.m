@@ -52,16 +52,16 @@ function [alp,kap,bet] = leeCar_NR(dates, ages,max_iter, tol)
     figure('name','ALPHA')
     plot(list_age,alp)
     ylabel('\alpha_{x}')
-    xlabel('ages')
+    xlabel('age')
   
     figure('name','BETTTA')
     plot(list_age,bet)
     ylabel('\beta_{x}')
-    xlabel('ages')
+    xlabel('age')
   
     figure('name','KAPPA')
     plot(list_period,kap)
     ylabel('\kappa_{x}')
-    xlabel('periodes')
+    xlabel('Année')
     
 end
