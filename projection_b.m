@@ -11,8 +11,9 @@ function [k_t] = projection_b(dates,n,t1, kap)% project in n year, m=number of s
   end
   sig_sq = sig_sq/(length(kap)-t_line);
   %-----Project kappat and build Confinden Inter-------
-  for year = 1:n
-    k_t(year) = ktn + year*d + random('norm',0,sqrt(sig_sq));
+  k_t(1) = ktn + d + random('norm',0,sqrt(sig_sq));
+  for year = 2:n
+    k_t(year) = k_t(year-1) + d + random('norm',0,sqrt(sig_sq));
   end
   
 end

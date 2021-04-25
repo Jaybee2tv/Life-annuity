@@ -27,7 +27,7 @@ function compare(dates,cohorte, alp,bet,kap) %This function compare LeeCAR Death
   hold on
   plot(dates(1):dates(2), log_mxt, 'DisplayName', 'LeeCar');
   %text(2002,-4.5,'mean diff = ' +string(differ))
-  xlabel('Age'); ylabel('log(\mu_{x})'); 
+  xlabel('Année'); ylabel('log(\mu_{x})'); 
   %compare 
     
 end
