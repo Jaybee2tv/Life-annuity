@@ -7,7 +7,7 @@ function [resi, eps_squar] = residual(dates, ages, alp, bet, kap)
   dates_indexes_data = zeros(1,length(dates(1):dates(2))); %indexes in Data table. Index of people thath have 0 year in year x
   date1 = dates(1);
   date2 = dates(2);
-  x_t = ages(2)-ages(1); t_t = dates(2)-dates(1)-1;
+  x_t = ages(2)-ages(1); t_t = dates(2)-dates(1);
   cohor = ages(1):ages(2);
   for i = date1:date2
     dates_indexes_data(i-date1+1) = find(Data.Year==i,1);
@@ -29,7 +29,7 @@ function [resi, eps_squar] = residual(dates, ages, alp, bet, kap)
         continue %bcause there are value with 0 in mx
       end
       epsi = log(Data.mx(dates_indexes_data(year)+cohor(age))) - (alp(age)+bet(age)*kap(year));
-      resi(age,year) = (epsi)/(sqrt(eps_squar/x_t*t_t));
+      resi(age,year) = (epsi)/(sqrt((eps_squar)/(x_t*t_t)));
     end
   end
   

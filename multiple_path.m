@@ -20,14 +20,15 @@ function [m_pro, k_t] = multiple_path(dates,ages,k,N,t1,bet, kap,cohor)% project
   sig_sq = sig_sq/(length(kap)-t_line);
   %-----Project kappat and build Confinden Inter-------
   k_tup= zeros(1,k);k_tdown = k_tup;
+  k_t(1,:) = ktn + d + random('norm',0,sqrt(sig_sq),1,N);
   for simu = 1:N
-    for year = 1:k
-      k_t(year,simu) = ktn + year*d+random('norm',0,sqrt(sig_sq));
+    for year = 2:k
+      k_t(year,simu) = k_t(year-1,simu) + d+random('norm',0,sqrt(sig_sq));
     end
   end
   for year = 1:k
-    k_tup(year) = ktn + year*d + sqrt(year*sig_sq)*z_alpha;
-    k_tdown(year) = ktn + year*d - sqrt(year*sig_sq)*z_alpha;
+    k_tup(year) = quantile(k_t(year,:),0.975);  %ktn + year*d + sqrt(year*sig_sq)*z_alpha;
+    k_tdown(year) = quantile(k_t(year,:),0.025); %ktn + year*d - sqrt(year*sig_sq)*z_alpha;
   end
    %------Projecting death------
   m_pro = zeros(k,1);
@@ -46,13 +47,13 @@ function [m_pro, k_t] = multiple_path(dates,ages,k,N,t1,bet, kap,cohor)% project
   %-------plotting  kappa-----
   figure('name', 'Kappa projected')
   x = dates(2)+1:dates(2)+k;
-  plot(x,k_t, 'DisplayName','\kappa mean')
+  plot(x,k_t)%, 'DisplayName','\kappa mean')
   hold on
   plot(list_dates(cohor+1:end), kap(cohor+1:end),'DisplayName','kappa')
   hold on
-  plot(x,k_tup,'r','DisplayName','k_{tup}')
+  plot(x,k_tup,'*-r','DisplayName','k_{tup}')
   hold on
-  plot(x,k_tdown,'r','DisplayName', 'k_{tdown}')
+  plot(x,k_tdown,'*-r','DisplayName', 'k_{tdown}')
   xlabel('Année'); ylabel('\kappa_{t}'); legend;
   %ylim([0 10])
   %-----------Plotting mortality rates-----------
@@ -67,7 +68,7 @@ function [m_pro, k_t] = multiple_path(dates,ages,k,N,t1,bet, kap,cohor)% project
 %   end
 %   a = cohor+length(list_d);
 %   figure('name', 'Mortality projected')
-%   plot(list_d, log(list_mx),'DisplayName', '\mu_{x}')
+%   plot(list_d, log(list_mx),'Display Name', '\mu_{x}')
 %   hold on
 %   plot(x, log(diag(m_pro,-(a))),'DisplayName', 'mean \mu_x ')
 %   hold on

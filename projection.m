@@ -19,11 +19,12 @@ function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap,cohor)% project in n
   end
   sig_sq = sig_sq/(length(kap)-t_line);
   %-----Project kappat and build Confinden Inter-------
+  k_t(1) = ktn + d + random('norm',0,sqrt(sig_sq));
   k_tup= zeros(1,n);k_tdown = k_tup;
-  for year = 1:n
-    k_t(year) = ktn + year*d; 
-    k_tup(year) = ktn + year*d + sqrt(year*sig_sq).*z_alpha;
-    k_tdown(year) = ktn + year*d - sqrt(year*sig_sq).*z_alpha;
+  for year = 2:n
+    k_t(year) = k_t(year-1) + d + random('norm',0,sqrt(sig_sq)); 
+    k_tup(year) = quantile(k_t(year,:),0.975);%ktn + *d + sqrt(year*sig_sq).*z_alpha;
+    k_tdown(year) = quantile(k_t(year,:),0.025);%ktn + year*d - sqrt(year*sig_sq).*z_alpha;
   end
   
    %------Projecting death------
@@ -47,11 +48,11 @@ function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap,cohor)% project in n
   plot(x,k_t, 'DisplayName','\kappa mean')
   hold on
   plot(list_dates(cohor+1:end), kap(cohor+1:end),'DisplayName','kappa')
-  hold on
-  plot(x,k_tup,'DisplayName','k_tup')
-  hold on
-  plot(x,k_tdown,'DisplayName', 'k_tdown')
-  xlabel('Année'); ylabel('\kappa_{t}'); legend;
+%   hold on
+%   plot(x,k_tup,'DisplayName','k_tup')
+%   hold on
+%   plot(x,k_tdown,'DisplayName', 'k_tdown')
+%   xlabel('Année'); ylabel('\kappa_{t}'); legend;
   %ylim([0 10])
   %-----------Plotting mortality rates-----------
   list_d = (dates(1)+cohor):dates(2);
@@ -66,11 +67,11 @@ function [m_pro, k_t] = projection(dates,ages,n,t1,bet, kap,cohor)% project in n
   plot(list_d, log(list_mx),'DisplayName', '\mu_{x}')
   hold on
   plot(x, log(diag(m_pro,-(a))),'DisplayName', 'mean \mu_x ')
-  hold on
-  plot(x, log(diag(m_pro_up,-(a))),'r','DisplayName', '\mu_{x}up ')
-  hold on
-  plot(x, log(diag(m_pro_down,-(a))),'r','DisplayName', '\mu_{x}down ')
-  xlabel('Periodes'); ylabel('\mu_{x}'); legend;
-  xlim([dates(1)+cohor 2050])
+%   hold on
+%   plot(x, log(diag(m_pro_up,-(a))),'r','DisplayName', '\mu_{x}up ')
+%   hold on
+%   plot(x, log(diag(m_pro_down,-(a))),'r','DisplayName', '\mu_{x}down ')
+%   xlabel('Periodes'); ylabel('log(\mu_{x}(t))'); legend;
+%   xlim([dates(1)+cohor 2050])
   %ylim([0 10])
 end
