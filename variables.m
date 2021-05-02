@@ -11,4 +11,4 @@ t1_p = 1951; %date at wich kappa became is linear. for projection purpose. Must 
 k = 25; %horizon de projection, we are projecting k years. MAX 40years, bcoz if 41 we will consider age until 110
 
 max_iter = 600; tol = 1e-6;
-B = 5000;
+B = 5;

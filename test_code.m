@@ -44,8 +44,7 @@ N = 5000;
 %% TARIFICATIONNNN: Strange The APV for non smoking people is high
 %pro =  p(50,10,alp,be,kap_pro,ages_lc,date_lc); %no need for kap bcoz we
 %have historical data. YOOOOO. Pay attention, you need to project for
-%minimum 35 year
-%years
+%minimum 35 years. So, run multiple_path with k = 40;
 [vap,moy] = rente_diff(0.02,2000,2010,50,alp,bet,kap_pro_n,ages_lc,date_lc,1);
 %%
 [apv_f,moy_f] = rente_diff(0.02,2000,2010,50,alp,bet,kap_pro_n,ages_lc,date_lc,1.15);
